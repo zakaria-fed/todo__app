@@ -72,7 +72,9 @@ function App() {
 
   const removeTask = (task) => {
     store.dispatch(makeTaskDone(task));
-    setDoneTodos((prev) => [...prev, store.getState().doneReducer]);
+    // console.log(task) // Returns {title: ""}
+    setDoneTodos((prev) => [...prev, task]);
+    setDoneTodos((prev) => console.log(prev));
   };
 
   return (
@@ -106,6 +108,8 @@ function App() {
               </Button>
             </h6>
           ))}
+
+          {console.log(doneTodos)}
         </form>
       </Provider>
     </div>
