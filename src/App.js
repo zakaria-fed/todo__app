@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Button, Input } from "@material-ui/core";
 import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
 
 function App() {
   // Create Action Creators
@@ -47,7 +48,11 @@ function App() {
   });
 
   // Create Store
-  const store = createStore(reducers);
+  const store = createStore(
+    reducers,
+    {},
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
 
   const [todo, setTodo] = useState("");
   const [activeTodos, setActiveTodos] = useState([]);
@@ -72,37 +77,37 @@ function App() {
 
   return (
     <div className="App">
-      <form>
-        <Input
-          placeholder="Enter your todo"
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
-        />
-        <br />
-        <br />
-        <Button
-          type="submit"
-          onClick={addTask}
-          variant="contained"
-          color="primary"
-        >
-          Add todo
-        </Button>
-        {activeTodos.map((task) => (
-          <h6 key={Math.random()}>
-            {task[0].title}
-            <Button
-              onClick={() => removeTask(task[0])}
-              color="secondary"
-              variant="contained"
-            >
-              Remove
-            </Button>
-          </h6>
-        ))}
-
-        
-      </form>
+      <Provider store={store}>
+        <form>
+          <Input
+            placeholder="Enter your todo"
+            value={todo}
+            onChange={(e) => setTodo(e.target.value)}
+          />
+          <br />
+          <br />
+          <Button
+            type="submit"
+            onClick={addTask}
+            variant="contained"
+            color="primary"
+          >
+            Add todo
+          </Button>
+          {activeTodos.map((task) => (
+            <h6 key={Math.random()}>
+              {task[0].title}
+              <Button
+                onClick={() => removeTask(task[0])}
+                color="secondary"
+                variant="contained"
+              >
+                Remove
+              </Button>
+            </h6>
+          ))}
+        </form>
+      </Provider>
     </div>
   );
 }
